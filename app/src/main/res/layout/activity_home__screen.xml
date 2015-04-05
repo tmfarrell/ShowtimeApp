@@ -20,14 +20,14 @@
         android:text="Search For Shows"
         android:id="@+id/searchbutton"
         android:layout_below="@+id/autoCompleteTextView"
-        android:layout_centerHorizontal="true" />
-        android:onClick="onSearchButtonClick"
+        android:layout_centerHorizontal="true"
+        android:onClick="onSearchButtonClick"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Shows List"
-        android:id="@+id/button2"
+        android:id="@+id/showslistbutton"
         android:layout_marginTop="53dp"
         android:layout_below="@+id/searchbutton"
         android:layout_centerHorizontal="true" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Notification Settings"
-        android:id="@+id/button3"
+        android:id="@+id/notificationsettingsbutton"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

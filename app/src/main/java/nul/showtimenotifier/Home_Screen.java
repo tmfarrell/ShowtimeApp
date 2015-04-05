@@ -1,13 +1,13 @@
 package nul.showtimenotifier;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 
 
 public class Home_Screen extends ActionBarActivity {
@@ -22,6 +22,41 @@ private AutoCompleteTextView actv;
 
         //actv=(AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
           //      actv.setadapter(adapter);
+
+        Button search_show_button = (Button)findViewById(R.id.searchbutton);
+        search_show_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home_Screen.this,SearchResults.class);
+                startActivity(intent);
+                        //.putExtra("keywords",actv.getText().toString()));
+                //actv.setText("");
+            }
+        });
+
+        Button notification_settings_button = (Button)findViewById(R.id.notificationsettingsbutton);
+        notification_settings_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home_Screen.this,NotificationSettings.class);
+                startActivity(intent);
+                //.putExtra("keywords",actv.getText().toString()));
+                //actv.setText("");
+            }
+        });
+
+        Button shows_list_button = (Button)findViewById(R.id.showslistbutton);
+        shows_list_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home_Screen.this,NotificationSettings.class);
+                startActivity(intent);
+                //.putExtra("keywords",actv.getText().toString()));
+                //actv.setText("");
+            }
+        });
+
+
     }
 
 
@@ -49,10 +84,10 @@ private AutoCompleteTextView actv;
 
 
 
-    public void onSearchButtonClicked(View view){
-        Intent i = new Intent(this,SearchResults.class);
-        startActivity(i.putExtra("keywords",actv.getText().toString()));
-        actv.setText("");
-    }
-
+//    public void onSearchButtonClicked(View view){
+//        Intent i = new Intent(this,SearchResults.class);
+//        startActivity(i.putExtra("keywords",actv.getText().toString()));
+//        actv.setText("");
+//    }
+//
 }
