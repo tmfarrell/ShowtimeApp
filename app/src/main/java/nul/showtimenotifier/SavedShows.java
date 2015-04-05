@@ -1,34 +1,24 @@
 package nul.showtimenotifier;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 
 
-public class Home_Screen extends ActionBarActivity {
+public class SavedShows extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home__screen);
-
-        String[] shows=getResources().getStringArray(R.array.list_of_shows);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
-
-        actv=(AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
-                actv.setadapter(adapter);
+        setContentView(R.layout.activity_saved_shows);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home__screen, menu);
+        getMenuInflater().inflate(R.menu.menu_saved_shows, menu);
         return true;
     }
 
@@ -46,13 +36,4 @@ public class Home_Screen extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-    public void onSearchButtonClicked(View view){
-        Intent i = new Intent(this,SearchResults.class);
-        startActivity(i.putExtra("keywords",actv.getText().toString()));
-        actv.setText("");
-    }
-
 }
