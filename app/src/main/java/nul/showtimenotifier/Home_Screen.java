@@ -11,17 +11,17 @@ import android.widget.AutoCompleteTextView;
 
 
 public class Home_Screen extends ActionBarActivity {
-
+private AutoCompleteTextView actv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home__screen);
 
-        String[] shows=getResources().getStringArray(R.array.list_of_shows);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+        //String[] shows=getResources().getStringArray(R.array.list_of_shows);
+        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
 
-        actv=(AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
-                actv.setadapter(adapter);
+        //actv=(AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+          //      actv.setadapter(adapter);
     }
 
 

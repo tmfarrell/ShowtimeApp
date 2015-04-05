@@ -16,22 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".TVShowListActivity"
-            android:label="@string/title_tvshow_list" >
-        </activity>
-        <activity
-            android:name=".TVShowDetailActivity"
-            android:label="@string/title_tvshow_detail"
-            android:parentActivityName=".TVShowListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nul.showtimenotifier.TVShowListActivity" />
-        </activity>
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_search" >
-        </activity>
+
+
         <activity
             android:name=".SearchResults"
             android:label="@string/title_activity_search_results" >
