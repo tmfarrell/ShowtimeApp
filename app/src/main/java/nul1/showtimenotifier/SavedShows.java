@@ -16,7 +16,7 @@ public class SavedShows extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_shows);
 
-        Button home_button = (Button)findViewById(R.id.homebutton);
+        Button home_button = (Button)findViewById(R.id.home_button);
         home_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
