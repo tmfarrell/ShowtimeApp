@@ -1,4 +1,4 @@
-package nul.showtimenotifier;
+package nul1.showtimenotifier;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -28,7 +28,6 @@ public class SearchResults extends ActionBarActivity {
                 //actv.setText("");
             }
         });
-
     }
 
 

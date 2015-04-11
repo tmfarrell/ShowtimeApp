@@ -1,4 +1,4 @@
-package nul.showtimenotifier;
+package nul1.showtimenotifier;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -16,7 +16,7 @@ public class NotificationSettings extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_settings);
 
-        Button search_home_button = (Button)findViewById(R.id.backbutton);
+        Button search_home_button = (Button)findViewById(R.id.button);
         search_home_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

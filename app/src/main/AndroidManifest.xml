@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nul.showtimenotifier" >
+    package="nul1.showtimenotifier" >
 
     <application
         android:allowBackup="true"

@@ -1,4 +1,4 @@
-package nul.showtimenotifier;
+package nul1.showtimenotifier;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,7 +49,7 @@ private AutoCompleteTextView actv;
         shows_list_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Home_Screen.this,NotificationSettings.class);
+                Intent intent = new Intent(Home_Screen.this,SavedShows.class);
                 startActivity(intent);
                 //.putExtra("keywords",actv.getText().toString()));
                 //actv.setText("");

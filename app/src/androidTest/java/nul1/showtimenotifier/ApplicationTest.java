@@ -1,4 +1,4 @@
-package nul.showtimenotifier;
+package nul1.showtimenotifier;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
