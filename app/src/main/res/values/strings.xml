@@ -1,12 +1,23 @@
 <resources>
     <string name="app_name">Showtime Notifier</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
     <string name="title_tvshow_list">TV Shows</string>
     <string name="title_tvshow_detail">TV Show Detail</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_search_results">SearchResults</string>
     <string name="title_activity_saved_shows">SavedShows</string>
     <string name="title_activity_notification_settings">NotificationSettings</string>
+
+    <!--Home_Screen-->
+    <string name="enter_shows">Search for Shows</string>
+
+    <!--SearchResults-->
+    <string name="home">Home</string>
+    <string name="results_view"></string>
+    <string name="get_full_record">Get Full Series Record</string>
+    <string name="save_to_favs">Save to Favorites</string>
+
 </resources>

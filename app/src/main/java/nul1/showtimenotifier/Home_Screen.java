@@ -1,19 +1,42 @@
 package nul1.showtimenotifier;
 
-import android.content.Intent;
+import android.util.Log;
 import android.os.Bundle;
+import android.content.Intent;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
+
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
+import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
+
+import java.net.URLEncoder;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.StringRequest;
+
+import libs.SeriesData;
 
 
 public class Home_Screen extends ActionBarActivity {
-private AutoCompleteTextView actv;
+    //save context for use in anonymous classes
+    final Context mContext = this;
+
+    //data struct to store series data
+    final SeriesData seriesData = new SeriesData();
+
+    //onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //required
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home__screen);
 
@@ -23,13 +46,58 @@ private AutoCompleteTextView actv;
         //actv=(AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
           //      actv.setadapter(adapter);
 
-        Button search_show_button = (Button)findViewById(R.id.searchbutton);
+        //init search textview and button
+        Button search_show_button = (Button) findViewById(R.id.searchbutton);
+        final AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+
+
+        //set button to send request to TVDB
         search_show_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Home_Screen.this,SearchResults.class);
-                startActivity(intent);
-                        //.putExtra("keywords",actv.getText().toString()));
+
+                //init requestqueue
+                RequestQueue queue = Volley.newRequestQueue(mContext);
+
+                //get string from edittext and encode
+                String query = "";
+                try {
+                    query = URLEncoder.encode(actv.getText().toString(), "utf-8");
+                } catch (Exception e)
+                {  Log.d("Error: ", e.toString()); }
+
+                //add query to url
+                String url = "http://thetvdb.com/api/GetSeries.php?seriesname=" + query;
+
+                //init string request
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {           //if no error occurs
+                            @Override
+                            public void onResponse(String response) {   //when response is returned
+                                //insert XML tokens into series data struct
+                                seriesData.insertSelectXML(response.split(">"));
+
+                                //set intent to open results screen
+                                Intent intent = new Intent(Home_Screen.this, SearchResults.class);
+
+                                //give intent series data string and seriesid
+                                intent.putExtra("seriesData", seriesData.toString());
+                                intent.putExtra("seriesID", seriesData.get("seriesid"));
+
+                                //open search results activity
+                                startActivity(intent);
+                            }
+                        }, new Response.ErrorListener() {               //if error occurs
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error: ", error.toString());             //log error
+                    }
+                });
+
+                //add request to requestqueue
+                queue.add(stringRequest);
+
+                //.putExtra("keywords",actv.getText().toString()));
                 //actv.setText("");
             }
         });
