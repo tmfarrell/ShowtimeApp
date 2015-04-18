@@ -1,12 +1,14 @@
 package nul1.showtimenotifier;
 
 import android.content.Intent;
+
 import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.view.MenuItem;
 
 
 public class SavedShows extends ActionBarActivity {
@@ -28,6 +30,7 @@ public class SavedShows extends ActionBarActivity {
                 //actv.setText("");
             }
         });
+
     }
 
 
