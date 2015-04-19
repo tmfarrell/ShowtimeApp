@@ -1,18 +1,27 @@
+/* SeriesData.java: dictionary data structure to act as in-between for app Activities/ Services
+ *                  and database.
+ *
+ * Tim Farrell, tmf@bu.edu
+ * 150417
+ */
+
 package libs;
+
+import android.util.Log;
 
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Calendar;
 
-/**
- * SeriesData:  dictionary data structure to facilitate parsing, storage
- *              and display of series XML, as extracted from the TVDB.
- */
+import java.text.SimpleDateFormat;
+
+
 public class SeriesData extends LinkedHashMap<String, String> {
 
     /* Fields */
     //tag labels of interest to be extracted from TVDB XML
-    ArrayList<String> tags = new ArrayList<String>();
+    ArrayList<String> fields = new ArrayList<String>();
 
     public final static String TVDB_API_KEY = "531FC560FB062CB3";
 
@@ -20,33 +29,35 @@ public class SeriesData extends LinkedHashMap<String, String> {
     /* Constructors */
     //no arg constructor: adds default tag labels
     public SeriesData() {
-        tags.add("seriesname");
-        tags.add("seriesid");
-        tags.add("genre");
-        tags.add("overview");
-        tags.add("status");
-        tags.add("dayofweek");
-        tags.add("time");
-        tags.add("network");
-        tags.add("runtime");
-        tags.add("rating");
-        tags.add("ratingcount");
-        tags.add("actors");
-        tags.add("contentrating");
-        tags.add("firstaired");
-        tags.add("id");
+        fields.add("seriesname");
+        fields.add("seriesid");
+        fields.add("genre");
+        fields.add("overview");
+        fields.add("status");
+        fields.add("dayofweek");
+        fields.add("time");
+        fields.add("network");
+        fields.add("runtime");
+        fields.add("rating");
+        fields.add("ratingcount");
+        fields.add("actors");
+        fields.add("contentrating");
+        fields.add("firstaired");
+        fields.add("id");
+        fields.add("nextairdate");
     }
 
-    public SeriesData(String [] _tags) {
-        this();                         //add default tags
-        for(String tag : _tags)          //then add input tags
-            tags.add(tag);
+    public SeriesData(String [] _fields) {
+        this();                         //add default fields
+        for(String field : _fields)     //then add custom fields
+            fields.add(field);
     }
 
 
     /* Methods */
     //inserts XML from a theTVDB XML string
     public void insertSelectXML(String[] strs) {
+
         String key, value, key_dummy;                   //dummy vars to hold tokens
 
         for(int i = 1; i < strs.length - 1; i += 2) {   //foreach token pair
@@ -62,7 +73,7 @@ public class SeriesData extends LinkedHashMap<String, String> {
                 value = value.substring(0, value.indexOf('_'));
 
             //if key token is in tag labels and if value of key not yet init
-            if(tags.contains(key) && this.get(key) == null)
+            if(fields.contains(key) && this.get(key) == null)
                 this.put(key, value);
 
             else if (key.contains("episodenumber")) {
@@ -73,12 +84,13 @@ public class SeriesData extends LinkedHashMap<String, String> {
                 key_dummy   = strs[i].toLowerCase().replaceAll("\\W*", "");
                 value       = strs[i+1].replaceAll("</[a-zA-Z]*", "");
 
-                if(key_dummy.contains("firstaired")) {
-                    value = key_dummy + " on " + value;
+                if(key_dummy.contains("firstaired"))
                     this.put(key, value);
-                }
             }
         }
+
+        //put next air date, if episode information avail
+        this.putNextAirDate();
     }
 
     //inserts XML from a theTVDB XML string
@@ -96,29 +108,81 @@ public class SeriesData extends LinkedHashMap<String, String> {
         }
     }
 
+    //parses episode data and fills the nextairdate field, if there is a next episode
+    private void putNextAirDate() {
+
+        final String TAG = "putNextAirDate: ";
+        String debug = "";
+
+        Calendar today = Calendar.getInstance();        //get today's date
+        Calendar episode_date = Calendar.getInstance(); //to store episode date
+        Calendar episode_time = Calendar.getInstance(); //to store episode time
+
+        //for parsing strings with dates of specified format
+        SimpleDateFormat date_parser = new SimpleDateFormat("yyyy-MM-dd");
+        //for parsing strings with times of specified format
+        SimpleDateFormat time_parser = new SimpleDateFormat("hh:mm a");
+
+        Iterator entries = this.entrySet().iterator(); //loop thru entries
+        while(entries.hasNext()) {
+            LinkedHashMap.Entry entry = (LinkedHashMap.Entry) entries.next();
+
+            //fill episode date
+            if (entry.getKey().toString().contains("episode")) {
+                try {
+                    episode_date.setTime(date_parser.parse(entry.getValue().toString()));
+                } catch (Exception e) {
+                    Log.v(TAG, "Could not parse date.");
+                }
+
+                //if episode after today, then episode_date is the nextairdate
+                if (today.before(episode_date))
+                    break;
+            }
+
+            //get air time from time field
+            if (entry.getKey().toString().contains("time")) {
+                try {
+                    episode_time.setTime(time_parser.parse(entry.getValue().toString()));
+                } catch (Exception e) {
+                    Log.v(TAG, "Could not parse time.");
+                }
+            }
+        }
+
+        //if episode_date after today and was changed from initial init
+        if ( (today.before(episode_date) )
+                && (today.get(Calendar.DATE)     != episode_date.get(Calendar.DATE)
+                    || today.get(Calendar.MONTH) != episode_date.get(Calendar.MONTH)
+                    || today.get(Calendar.YEAR)  != episode_date.get(Calendar.YEAR)) ) {
+
+            //add episode time to date and append to data struct
+            episode_date.add(Calendar.HOUR, episode_time.get(Calendar.HOUR));
+            this.put("nextairdate", episode_date.getTime().toString());
+        }
+    }
+
 
     //prints entries in clean format
     @Override
     public String toString() {
         String str = "";
 
-        for (String tag : tags) {
-            if (this.get(tag) != null)
-                str += tag + ": " + this.get(tag) + "\n\n";
+        for (String field : fields) {
+            if (this.get(field) != null)
+                str += field + ": " + this.get(field) + "\n\n";
         }
 
         Iterator entries = this.entrySet().iterator();
         while(entries.hasNext()) {
             LinkedHashMap.Entry entry = (LinkedHashMap.Entry) entries.next();
 
-            if (!tags.contains(entry.getKey().toString()))
+            if (!fields.contains(entry.getKey().toString()))
                 str += entry.getKey().toString() + ": " + entry.getValue().toString() + "\n\n";
         }
 
-        if(str != "")
-            return str;
-        else
-            return "\nThere were no results for your search.";
+        if(str != "")   return str;
+        else            return "\nThere were no results for your search.";
     }
 }
 

@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import java.net.URLEncoder;
 
@@ -47,8 +49,16 @@ public class Home_Screen extends ActionBarActivity {
           //      actv.setadapter(adapter);
 
         //init search textview and button
-        Button search_show_button = (Button) findViewById(R.id.searchbutton);
+        final Button search_show_button = (Button) findViewById(R.id.searchbutton);
         final AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+
+        actv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                search_show_button.callOnClick();
+                return false;
+            }
+        });
 
 
         //set button to send request to TVDB
