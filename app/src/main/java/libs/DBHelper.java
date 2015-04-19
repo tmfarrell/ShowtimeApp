@@ -12,12 +12,46 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    /* TEST STRUCTS */
+    final static SeriesData the_following = new SeriesData() {
+        @Override
+        public void fill() {
+            put("seriesname", "The Following");
+            put("network", "Fox");
+            put("nextairdate", "Mon Apr 20 09:00:00 EDT 2015");
+        }
+    };
+    final static SeriesData orange_is_the_new_black = new SeriesData() {
+        @Override
+        public void fill() {
+            put("seriesname", "Orange is the New Black");
+            put("network", "Netflix");
+            put("nextairdate", "Fri Jun 12 00:00:00 EDT 2015");
+        }
+    };
+    final static SeriesData game_of_thrones = new SeriesData() {
+        @Override
+        public void fill() {
+            put("seriesname", "Game of Thrones");
+            put("network", "HBO");
+            put("nextairdate", "Sun Apr 19 09:00:00 EDT 2015");
+        }
+    };
+    final static SeriesData marco_polo = new SeriesData() {
+        @Override
+        public void fill() {
+            put("seriesname", "Marco Polo (2014)");
+            put("network", "Netflix");
+            put("nextairdate", "None available.");
+        }
+    };
 
-    public final static SeriesData[] TEST = new SeriesData[3];
+    public final static SeriesData[] TEST = {the_following,
+                                             orange_is_the_new_black,
+                                             game_of_thrones,
+                                             marco_polo};
 
-
-
-    //init table for series data
+    /* SERIES TABLE */
     final static String SERIES_TABLE_NAME = "series";
     final static String SERIES_ID   = "seriesid";
     final static String SERIES_NAME = "seriesname";
@@ -48,16 +82,18 @@ public class DBHelper extends SQLiteOpenHelper {
                                + ACTORS + " TEXT, "+ CONTENTRATING + " TEXT, "
                                + FIRSTAIRED + " TEXT, "+ NEXTAIRDATE + " TEXT);";
 
+    /* EPISODE TABLE *//*
     final static String EPISODE_TABLE_NAME = "episode";
-    final static String EPISODE_NAME = "series_name";
-    final static String EPISODE_ID   = "series_id";
-    final static String[] episode_col = { EPISODE_ID, EPISODE_NAME };
+    final static String EPISODE_ID   = "episodeid";
+    final static String EPISODE_NAME = "episodename";
+    final static String DATE         = "date";
+    final static String[] episode_col = { EPISODE_ID, SERIES_ID, EPISODE_NAME, OVERVIEW, DATE };
 
     final private static String CREATE_EPISODE_CMD =
 
-            "CREATE TABLE episode (" + EPISODE_ID
-                    + " TEXT PRIMARY KEY, "
-                    + EPISODE_NAME + " TEXT NOT NULL)";
+        "CREATE TABLE series ("+ EPISODE_ID + " TEXT PRIMARY KEY, "
+                               + SERIES_ID + "TEXT FOREIGN KEY, "
+                               + OVERVIEW + "TEXT, "+ DATE + "TEXT);";*/
 
     final private static String NAME = "user_favorites_db";
     final private static Integer VERSION = 1;
@@ -71,6 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_SERIES_CMD);
+        //db.execSQL(CREATE_EPISODE_CMD);
     }
 
     @Override

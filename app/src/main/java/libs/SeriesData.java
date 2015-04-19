@@ -32,29 +32,31 @@ public class SeriesData extends LinkedHashMap<String, String> {
         fields.add("seriesname");
         fields.add("seriesid");
         fields.add("genre");
+        fields.add("network");
         fields.add("overview");
         fields.add("status");
-        fields.add("dayofweek");
-        fields.add("time");
-        fields.add("network");
+        fields.add("nextairdate");
         fields.add("runtime");
         fields.add("rating");
         fields.add("ratingcount");
         fields.add("actors");
         fields.add("contentrating");
         fields.add("firstaired");
-        fields.add("id");
-        fields.add("nextairdate");
+        fields.add("dayofweek");
+        fields.add("time");
     }
 
-    public SeriesData(String [] _fields) {
+    public SeriesData(String[] _fields) {
         this();                         //add default fields
-        for(String field : _fields)     //then add custom fields
+        for (String field : _fields)     //then add custom fields
             fields.add(field);
     }
 
 
     /* Methods */
+    //method to be customized by anonymous class declaration
+    public void fill() { }
+
     //inserts XML from a theTVDB XML string
     public void insertSelectXML(String[] strs) {
 
@@ -159,6 +161,11 @@ public class SeriesData extends LinkedHashMap<String, String> {
             //add episode time to date and append to data struct
             episode_date.add(Calendar.HOUR, episode_time.get(Calendar.HOUR));
             this.put("nextairdate", episode_date.getTime().toString());
+        }
+        else if ( today.get(Calendar.DATE)     != episode_date.get(Calendar.DATE)
+                    || today.get(Calendar.MONTH) != episode_date.get(Calendar.MONTH)
+                    || today.get(Calendar.YEAR)  != episode_date.get(Calendar.YEAR)) {
+            this.put("nextairdate", "none available");
         }
     }
 
