@@ -1,19 +1,18 @@
 package nul1.showtimenotifier;
 
-import android.os.Bundle;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import android.text.method.ScrollingMovementMethod;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,8 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.net.URLEncoder;
-
+import libs.DatabaseClient;
 import libs.SeriesData;
 
 
@@ -41,11 +39,14 @@ public class SearchResults extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
+        //Create database for storing the shows when app is started
+        final DatabaseClient showdb = new DatabaseClient(this);
+
         //setup UI elements
         Button search_home_button = (Button)findViewById(R.id.backbutton);
         final TextView resultsView = (TextView) findViewById(R.id.results_view);
         Button getFullRecord = (Button) findViewById(R.id.get_full_record);
-        Button saveToFavs    = (Button) findViewById(R.id.save_to_favs);
+        final Button saveToFavs    = (Button) findViewById(R.id.save_to_favs);
 
         //make textview scrollable
         resultsView.setMovementMethod(new ScrollingMovementMethod());
@@ -111,11 +112,13 @@ public class SearchResults extends ActionBarActivity {
             public void onClick(View v) {
                 //save full series data to db
                 //saveToFavsDB(seriesData);
+                showdb.AddShow(seriesData);
+                saveToFavs.setEnabled(false);
+                saveToFavs.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
             }
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

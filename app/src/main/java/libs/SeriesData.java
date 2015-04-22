@@ -25,6 +25,14 @@ public class SeriesData extends LinkedHashMap<String, String> {
 
     public final static String TVDB_API_KEY = "531FC560FB062CB3";
 
+    /*
+    //Trying to add some data fields to see if this will make database work.
+    public static final String TABLE = "series";
+    public static final String SERIES_NAME = "series_name";
+    public static final String SERIES_ID = "series_id";
+
+    public String series_name;
+    public String series_id;*/
 
     /* Constructors */
     //no arg constructor: adds default tag labels
