@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -21,11 +22,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import libs.DatabaseClient;
+
 import libs.SeriesData;
 
 
 public class SearchResults extends ActionBarActivity {
+
+    //Handler for all posts--here implements a delay for save button
+    private Handler mHandler = new Handler();
+
 
     //save context for use in anonymous class
     final Context mContext = this;
@@ -40,7 +45,7 @@ public class SearchResults extends ActionBarActivity {
         setContentView(R.layout.activity_search_results);
 
         //Create database for storing the shows when app is started
-        final DatabaseClient showdb = new DatabaseClient(this);
+        //final DBHelper showdb = new this;
 
         //setup UI elements
         Button search_home_button = (Button)findViewById(R.id.backbutton);
@@ -112,10 +117,20 @@ public class SearchResults extends ActionBarActivity {
             public void onClick(View v) {
                 //save full series data to db
                 //saveToFavsDB(seriesData);
-                showdb.AddShow(seriesData);
+                //showdb.AddShow(seriesData);
                 saveToFavs.setEnabled(false);
                 saveToFavs.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
+                mHandler.postDelayed(mLaunchTask,1000);
             }
+
+            //Launch activity after delay
+            private Runnable mLaunchTask = new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(SearchResults.this,Home_Screen.class);
+                    startActivity(intent);
+                }
+            };
         });
 
     }
