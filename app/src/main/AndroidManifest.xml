@@ -18,7 +18,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-    \
+
         </activity>
 
         <activity
@@ -38,10 +38,14 @@
             android:name=".NotificationSettings"
             android:label="@string/title_activity_notification_settings" >
         </activity>
+        <activity android:name=".SeriesDetail"
+            android:label="SeriesDetail" >
+            </activity>
         <activity
             android:name="nul.showtimenotifier.Splash"
             android:label="@string/title_activity_splash" >
         </activity>
+
     </application>
 
 </manifest>
