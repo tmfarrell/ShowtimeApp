@@ -9,14 +9,22 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".Home_Screen"
+            android:name=".Splash"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+    \
+        </activity>
+
+        <activity
+            android:name=".Home_Screen"
+            android:label="@string/app_name" >
+
         </activity>
         <activity
             android:name=".SearchResults"
@@ -31,8 +39,8 @@
             android:label="@string/title_activity_notification_settings" >
         </activity>
         <activity
-            android:name=".SeriesDetail"
-            android:label="@string/title_activity_series_detail" >
+            android:name="nul.showtimenotifier.Splash"
+            android:label="@string/title_activity_splash" >
         </activity>
     </application>
 
