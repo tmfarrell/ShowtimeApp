@@ -19,5 +19,8 @@
     <string name="results_view"></string>
     <string name="get_full_record">Get Full Series Record</string>
     <string name="save_to_favs">Save to Favorites</string>
+    <string name="title_activity_series_detail">SeriesDetail</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>
