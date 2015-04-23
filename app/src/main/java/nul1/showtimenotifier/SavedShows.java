@@ -15,7 +15,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import libs.DBHelper;
@@ -86,26 +88,23 @@ public class SavedShows extends ActionBarActivity {
         //Currently will create data based on DBHelper.TEST
         //
         //List<seriesList> seriesDataList = getAllSeries();
-        /*
-        private LayoutInflater mInflater;
-        private Context ctx;
-        public SeriesDataListAdapter(Context context) {
-            mInflater = LayoutInflater.from(context);
-            ctx=context;
-        }
-        */
-        List<SeriesData> ListofSeries = getDataForListView();
+
+        //Create List object of class SeriesData
+        //This list is what stores values extracted from the database
+        //The adapter then passes this list to the custom listview object for display purposes
+        //The function getDataForListView() assembles the list from the database.
+        List<SeriesData> listOfSeries = getDataForListView();
 
         @Override
         public int getCount() {
             //TODO Auto-generated method stub
-            return ListofSeries.size();
+            return listOfSeries.size();
         }
 
         @Override
         public SeriesData getItem(int arg0) {
             //TODO Auto-generated method stub
-            return ListofSeries.get(arg0);
+            return listOfSeries.get(arg0);
         }
 
         @Override
@@ -114,6 +113,8 @@ public class SavedShows extends ActionBarActivity {
             return arg0;
         }
 
+        //Create a view associated with each object in the list. This view gets passed to
+        //the listview object. Data fields for the view are extracted from the list.
         @Override
         public View getView(int arg0, View arg1, ViewGroup arg2) {
             LayoutInflater inflater;
@@ -125,18 +126,19 @@ public class SavedShows extends ActionBarActivity {
             }
             TextView seriesName = (TextView)arg1.findViewById(R.id.seriesnametextview);
             TextView daysUntil = (TextView)arg1.findViewById(R.id.datecountdowntextview);
-            SeriesData series = ListofSeries.get(arg0);
+            SeriesData series = listOfSeries.get(arg0);
 
             //seriesName.setText("\n\n" + series.toString());
             seriesName.setText(series.get("seriesname"));
-            daysUntil.setText("7");
+            //daysUntil.setText("7");
+            daysUntil.setText("" + daysUntilNextShowing(series) + " Days");
             return arg1;
         }
 
         //This code returns location in the list, essentially allowing the ID of the item
         //clicked on to be passed to the detail function.
         public SeriesData getSeriesDataItem(int position) {
-            return ListofSeries.get(position);
+            return listOfSeries.get(position);
         }
 
     }
@@ -170,17 +172,18 @@ public class SavedShows extends ActionBarActivity {
 
     //This function generates a list object from the SQLite database
     //At this point, it generates it from the TEST structure.
+    //This is passed to the view creating function above.
     public List<SeriesData> getDataForListView() {
-        List<SeriesData> listofseries = new ArrayList<SeriesData>();
+        List<SeriesData> listOfSeries = new ArrayList<SeriesData>();
 
         for(int i=0; i<DBHelper.TEST.length; ++i) {
 
             DBHelper.TEST[i].fill();
             SeriesData series = DBHelper.TEST[i];
-            listofseries.add(series);
+            listOfSeries.add(series);
 
         }
-        return listofseries;
+        return listOfSeries;
     }
 
 
@@ -188,9 +191,37 @@ public class SavedShows extends ActionBarActivity {
     //This number is then passed to the datecountdown textobject.
     //This allows quick visualization of when the next episode is in listview
     //Pass it a series variable with a next showing field, and it will calculate.
-    /*
-    public int daysUntilNextShowing(SeriesData series) {
+
+    public long daysUntilNextShowing(SeriesData series) {
+        long daysBetween = 0;
+        Calendar today = Calendar.getInstance();        //get today's date
+        //Set date back to time 00:00:00
+
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+        Calendar episode_date = Calendar.getInstance(); //to store episode date
+        //Calendar episode_time = Calendar.getInstance(); //to store episode time
+
+        //for parsing strings with dates of specified format
+        SimpleDateFormat date_parser = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
+
+        try {
+            episode_date.setTime(date_parser.parse(series.get("nextairdate")));
+        } catch (Exception e) {
+          //TODO Auto-Generated catch block  ;
+        }
+
+        //Increment today's date and counter as long as it is still before the episode date
+        while(today.before(episode_date))
+        {
+            today.add(Calendar.DAY_OF_MONTH, 1);
+            daysBetween++;
+        }
+        return daysBetween;
     }
-    */
+
 }
 

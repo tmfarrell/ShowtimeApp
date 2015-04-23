@@ -9,14 +9,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import libs.SeriesData;
+
 /* created by nickhall 4/23/15 */
 
 public class SeriesDetail extends ActionBarActivity {
 
-
+    //Buttons
     Button btnClose;
     Button btnDelete;
+
+    //Testing purposes to see if string can be passed.
     TextView textviewname;
+
+    //Initialize a SeriesData class object to get and display all of the show information.
+    SeriesData seriesData = new SeriesData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
