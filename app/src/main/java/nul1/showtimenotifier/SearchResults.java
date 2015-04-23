@@ -64,6 +64,15 @@ public class SearchResults extends ActionBarActivity {
         //display in textview
         resultsView.setText(seriesDataStr);
 
+
+        //Check if seriesID is present. If seriesID not present, then no results were returned
+        //If no results were returned, deactivate save button.
+        if(seriesID==null)
+        {
+            saveToFavs.setEnabled(false);
+            saveToFavs.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
+        }
+
         //set listener for back
         search_home_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -45,16 +46,14 @@ public class SavedShows extends ActionBarActivity {
         seriesDataView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-
-
                 SeriesData series = seriesDataAdapter.getSeriesDataItem(arg2);
                 Intent objIntent = new Intent(getApplicationContext(), SeriesDetail.class);
                 String seriesName = series.get("seriesname");
 
-                //Doesn't work, has something to do with how the intent is being passed.
                 //Pass the name of the show to the activity
                 objIntent.putExtra("SERIESNAME", seriesName);
-                //Toast.makeText(SavedShows.this, series.get("seriesname"), Toast.LENGTH_LONG).show();
+                objIntent.putExtra("SERIESDATA", series);
+
                 startActivity(objIntent);
             }
         });
@@ -124,14 +123,28 @@ public class SavedShows extends ActionBarActivity {
                 inflater = (LayoutInflater) SavedShows.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 arg1 = inflater.inflate(R.layout.series_data_list_view, arg2, false);
             }
+            ImageView seriesImage = (ImageView)arg1.findViewById(R.id.imageview1);
             TextView seriesName = (TextView)arg1.findViewById(R.id.seriesnametextview);
             TextView daysUntil = (TextView)arg1.findViewById(R.id.datecountdowntextview);
             SeriesData series = listOfSeries.get(arg0);
 
-            //seriesName.setText("\n\n" + series.toString());
+            //Series Photo
+            seriesImage.setImageResource(R.mipmap.ic_launcher);
+
+            //Set the name of the series
             seriesName.setText(series.get("seriesname"));
-            //daysUntil.setText("7");
-            daysUntil.setText("" + daysUntilNextShowing(series) + " Days");
+
+            //If-else statements for displaying right number for days.
+            long days = daysUntilNextShowing(series);
+            if (days == 0) {
+                daysUntil.setText("NA");
+            }
+            else if (days == 1) {
+                daysUntil.setText("" + days + " Day");
+            }
+            else {
+                daysUntil.setText("" + days + " Days");
+            }
             return arg1;
         }
 
@@ -191,7 +204,6 @@ public class SavedShows extends ActionBarActivity {
     //This number is then passed to the datecountdown textobject.
     //This allows quick visualization of when the next episode is in listview
     //Pass it a series variable with a next showing field, and it will calculate.
-
     public long daysUntilNextShowing(SeriesData series) {
         long daysBetween = 0;
         Calendar today = Calendar.getInstance();        //get today's date

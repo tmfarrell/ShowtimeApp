@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import libs.SeriesData;
 
 /* created by nickhall 4/23/15 */
@@ -22,8 +24,13 @@ public class SeriesDetail extends ActionBarActivity {
     //Testing purposes to see if string can be passed.
     TextView textviewname;
 
+    //TextView object for displaying all of the relevant series data
+    TextView details_TextView;
+
     //Initialize a SeriesData class object to get and display all of the show information.
     SeriesData seriesData = new SeriesData();
+    //Create dummy linkedhashmapobject
+    HashMap<String, String> testData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,7 @@ public class SeriesDetail extends ActionBarActivity {
         btnClose = (Button) findViewById(R.id.buttoncloseshowdetail);
         btnDelete = (Button) findViewById(R.id.deleteshowbutton);
         textviewname = (TextView) findViewById(R.id.detailtextview1);
+        details_TextView = (TextView) findViewById(R.id.detail_AllDetails);
 
         //Button to return to saved shows list
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +60,13 @@ public class SeriesDetail extends ActionBarActivity {
         Bundle b = intent.getExtras();
         if (b != null) {
             String seriesNameStr = (String) b.get("SERIESNAME");
+            testData = (HashMap<String, String>) b.get("SERIESDATA");
             textviewname.setText(seriesNameStr);
         }
+
+        //Display all of the series data from the seriesData object
+        details_TextView.setText(testData.toString());
+
 
         //Do something when delete button is clicked on
         /*
