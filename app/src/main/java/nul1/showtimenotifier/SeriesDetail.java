@@ -29,7 +29,7 @@ public class SeriesDetail extends ActionBarActivity {
 
     //Initialize a SeriesData class object to get and display all of the show information.
     SeriesData seriesData = new SeriesData();
-    //Create dummy linkedhashmapobject
+    //Create dummy hashmap object
     HashMap<String, String> testData;
 
     @Override
