@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -31,6 +33,8 @@ public class Home_Screen extends ActionBarActivity {
 
     //data struct to store series data
     final SeriesData seriesData = new SeriesData();
+
+    LinearLayout mLinearLayout;
 
     //onCreate
     @Override
@@ -131,6 +135,8 @@ public class Home_Screen extends ActionBarActivity {
                 //actv.setText("");
             }
         });
+
+        ImageView i = new ImageView(this);
 
 
     }
