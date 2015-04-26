@@ -62,8 +62,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/tvsnlogo"
-        android:layout_above="@+id/autoCompleteTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="51dp" />
+        android:layout_below="@+id/notificationsettingsbutton"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
